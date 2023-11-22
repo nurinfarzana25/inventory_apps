@@ -15,6 +15,52 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+1. Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+
+Ya, kita dapat mengakses data JSON tanpa perlu membuat model terlebih dahulu. Proses pengambilan data JSON melibatkan membaca atau mengonsumsi data yang dikirim dalam format JSON. Ini dapat dilakukan melalui bahasa pemrograman yang mendukung pengolahan JSON atau menggunakan library khusus yang tersedia dalam banyak bahasa pemrograman. Pembuatan model, di sisi lain, umumnya terkait dengan kebutuhan analisis data yang lebih mendalam, seperti dalam pembelajaran mesin, di mana tujuannya adalah membuat model berdasarkan data yang ada.
+
+Keputusan untuk melakukan pengambilan data JSON tanpa membuat model terlebih dahulu atau sebaliknya bergantung pada kebutuhan dan tujuan Anda:
+
+Jika tujuan utamanya adalah mengakses atau menampilkan data JSON dari API atau sumber data lainnya, lebih baik tidak membuat model.
+
+Namun, jika tujuan Anda melibatkan analisis data lebih lanjut, prediksi pola, atau pembuatan rekomendasi berdasarkan data tersebut, maka membangun model menjadi suatu kebutuhan.
+
+2. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+
+CookieRequest berfungsi untuk mengelola permintaan request yang berhubungan dengan cookie dalam aplikasi. Dimana class ini akan menngatur hal-hal yang berkaitan dengan data yang disimpan di sisi cllient untuk melacak informasi terkait sesi pengguna.
+
+Instance CookieRequest perlu dibagikan ke semua komponen untuk memastikan bahwa manajemen cookie dilakukan dengan cara yang seragam di semua komponen dalam aplikasi tersebut sehingga sesi pengguna akan dipelihata dengan konsisten.
+
+3. Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+
+Pertama, buat terlebih dahulu model sesuai dengan respons dari data JSON tersebut. Lalu, kita buat suatu http request ke web untuk melakukan fetch data. Untuk tugas ini, data diambil dari aplikasi webbb django tugas sebelumnya. Terakhir, data ditampilkan pada flutter melalui widget.
+
+4. Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+
+Pada halaman login (LoginPage), user akan diminta input berupa username serta passwordnya untuk diisi. Username dan password tersebut akan dikirim ke method login yang ada di app authentication yang ada pada web Django. Jika username dan password benar, maka method tersebut akan me-return status True dan user dapat masuk ke dalam aplikasi.
+
+5. Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+
+TextField : menerima input teks dari pengguna. Pada tugas ini digunakan untuk menerima username dan password saat login dan registrasi.
+SizedBox : membuat ruang tertentu. Pada tugas ini dugnakan untuk memberikan jarak atau pemisah antara TextField username dan passowrd.
+ElevatedButton : membuat tombol yang memiliki efek elevasi ketika ditekan. Pada tugas ini digunakan sebagai tombol submit pada saat login dan registrasi.
+TextButton : membuat tombol berupa teks tanpa latar belakang. Pada tugas ini digunakan pada tombol registrasi
+Listview.builder : membuat daftar item yang dapat discroll. Pada tugas ini digunakan untuk menampilkan daftar item yang ada.
+Text : membuat teks. Pada tugas ini digunakann untuk menampilkan teks detail saat item pada daftar item ditekan.
+
+6. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+
+Membuat app baru bernama authentication pada proyek django sbeelumnya. Lalu melakukan beberapa settings pada setting.py nya.
+Membuat views untuk authentication yang nantinya akan digunakan pada saat login.
+Menginstal package Flutter untuk melakukan kontak dengan webservice django.
+Membuat file untuk login, yaitu login.dart di folder screens, lalu mengimplementasikan kode nya.
+membuat model kustom dengan bantuan web Quicktype, lalu menambahkan dependency http nya.
+Membuat file list_product.dart untuk tampilan "Lihat Item". Disini dilakukan fetch data dari Django tugas sebelumnya. Pada file ini, akan ditambilkan seluruh item yang ada di database django tugas sebelumnya, dan saya membuat ontap pada setiap item yang bis aberalih ke page deail product.
+Membuat file detail product untuk menapilkan dtail suatu product.
+Mengisi readme.
+
+#####################################################################################################
+
 1. Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement(), disertai dengan contoh mengenai penggunaan kedua metode tersebut yang tepat!
 
 Navigator.push() digunakan untuk memasukkan halaman baru ke atas stack navigasi. Halaman yang dipanggil menggunakan Navigator.push() akan menjadi halaman teratas dalam stack navigasi. Ketika kembali dari halaman tersebut, maka akan kembali ke halaman sebelumnya dalam stack

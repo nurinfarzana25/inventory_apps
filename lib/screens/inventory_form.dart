@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 // Impor drawer yang sudah dibuat sebelumnya
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:inventory_apps/models/inventory_models.dart';
 import 'package:inventory_apps/screens/inventory_page.dart';
 import 'package:inventory_apps/widgets/left_drawer.dart';
+import 'package:inventory_apps/screens/menu.dart';
 
 
 List<Product> productList = [];
@@ -20,9 +24,10 @@ class _ShopFormPageState extends State<ShopFormPage> {
   int _price = 0;
   String _description = "";
   int _amount = 0;
-    @override
-    Widget build(BuildContext context) {
-        return Scaffold(
+  @override
+  Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+    return Scaffold(
           appBar: AppBar(
             title: const Center(
               child: Text(
@@ -150,48 +155,79 @@ class _ShopFormPageState extends State<ShopFormPage> {
                         backgroundColor:
                             MaterialStateProperty.all(Colors.indigo),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          Product newItem = Product(
-                                name: _name,
-                                amount: _amount,
-                                description: _description,
-                                price: _price,
-                              );
-                              productList.add(newItem);
-
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Item berhasil tersimpan'),
-                                content: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Nama: $_name'),
-                                      // Munculkan value-value lainnya
-                                      Text('Price: $_price'),
-                                      Text('Description: $_description'),
-                                      Text('Amount: $_amount')
-                                    ],
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        _formKey.currentState!.reset();
+                            // Kirim ke Django dan tunggu respons
+                            // TODO: Ganti URL dan jangan lupa tambahkan trailing slash (/) di akhir URL!
+                            final response = await request.postJson(
+                            "http://localhost:8000/create-flutter/",
+                            jsonEncode(<String, String>{
+                                'name': _name,
+                                'price': _price.toString(),
+                                'description': _description,
+                                'amount': _amount.toString(),
+                                // TODO: Sesuaikan field data sesuai dengan aplikasimu
+                            }));
+                            if (response['status'] == 'success') {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                content: Text("Produk baru berhasil disimpan!"),
+                                ));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                                );
+                            } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                    content:
+                                        Text("Terdapat kesalahan, silakan coba lagi."),
+                                ));
+                            }
                         }
-                      },
+                    },
+                      // onPressed: () {
+                      //   if (_formKey.currentState!.validate()) {
+                      //     Product newItem = Product(
+                      //           name: _name,
+                      //           amount: _amount,
+                      //           description: _description,
+                      //           price: _price,
+                      //         );
+                      //         productList.add(newItem);
+
+                      //     showDialog(
+                      //       context: context,
+                      //       builder: (context) {
+                      //         return AlertDialog(
+                      //           title: const Text('Item berhasil tersimpan'),
+                      //           content: SingleChildScrollView(
+                      //             child: Column(
+                      //               crossAxisAlignment:
+                      //                   CrossAxisAlignment.start,
+                      //               children: [
+                      //                 Text('Nama: $_name'),
+                      //                 // Munculkan value-value lainnya
+                      //                 Text('Price: $_price'),
+                      //                 Text('Description: $_description'),
+                      //                 Text('Amount: $_amount')
+                      //               ],
+                      //             ),
+                      //           ),
+                      //           actions: [
+                      //             TextButton(
+                      //               child: const Text('OK'),
+                      //               onPressed: () {
+                      //                 Navigator.pop(context);
+                      //               },
+                      //             ),
+                      //           ],
+                      //         );
+                      //       },
+                      //     );
+                      //   _formKey.currentState!.reset();
+                      //   }
+                      // },
                       child: const Text(
                         "Save",
                         style: TextStyle(color: Colors.white),
